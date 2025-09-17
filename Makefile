@@ -1,4 +1,3 @@
-ARCH := darwin/amd64 darwin/arm64 linux/386 linux/amd64 windows/386 windows/amd64
 VERSION := $(shell git describe --always --dirty)
 LDFLAGS := -ldflags "-X main.version=${VERSION}"
 BUILD_DIR := build
@@ -7,9 +6,18 @@ BUILD_DIR := build
 build: *.go
 	go build ${LDFLAGS}
 
+.PHONY: release-local
+release-local: *.go
+	goreleaser release --snapshot --clean && goreleaser check
+
 .PHONY: release
 release: *.go
-	gox -output '${BUILD_DIR}/{{.Dir}}.{{.OS}}.{{.Arch}}' -osarch "${ARCH}" ${LDFLAGS}
+	@if [ -z "$$GITHUB_TOKEN" ]; then \
+		echo "Error: GITHUB_TOKEN environment variable is required for release"; \
+		echo "Set it with: export GITHUB_TOKEN=your_token_here"; \
+		exit 1; \
+	fi
+	goreleaser release --clean
 
 .PHONY: clean
 clean:

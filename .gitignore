@@ -1,3 +1,5 @@
 yajsv
 build/
 coverage.out
+# Added by goreleaser init:
+dist/

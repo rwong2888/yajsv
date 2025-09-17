@@ -62,6 +62,34 @@ URI references to either local or external files.
 
 See `yajsv -h` for more details
 
+## Release
+
+### Install dependency
+```
+brew install goreleaser
+```
+
+### Tag your release
+```
+git tag -a v1.4.2 -m "v1.4.2: Now with Linux Arm64"
+git push origin v1.4.2
+```
+
+### Create your GitHub Token
+To release to GitHub, you'll need to export a GITHUB_TOKEN environment variable, which should contain a valid GitHub token with the repo scope. It will be used to deploy releases to your GitHub repository. You can create a new GitHub token [here](https://github.com/settings/tokens/new?scopes=repo,write:packages).
+
+The minimum permissions the GITHUB_TOKEN should have to run this are `write:packages`
+
+### Set your GitHub Token
+```
+export GITHUB_TOKEN="YOUR_GH_TOKEN"
+```
+
+### Release
+```
+goreleaser release
+```
+
 ## License
 
 [MIT](/LICENSE)
